@@ -5,10 +5,10 @@ const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
 
 const mockUser = {
-  firstName: 'Test',
-  lastName: 'User',
-  email: 'test@example.com',
-  password: '12345',
+  firstName: 'Doug',
+  lastName: 'Dimmadome',
+  email: 'Proprietor@Dome.com',
+  password: 'hat',
 };
 
 const registerAndLogin = async (userProps = {}) => {
@@ -46,6 +46,13 @@ describe('secret routes', () => {
       ...user,
       exp: expect.any(Number),
       iat: expect.any(Number),
+    });
+  });
+  it('DELETE should return 404 error when signed out', async () => {
+    const res = await request(app).get('/api/v1/users');
+    expect(res.body).toEqual({
+      message: 'You have to sign in. YOU HAVE TO!',
+      status: 401,
     });
   });
   afterAll(() => {
