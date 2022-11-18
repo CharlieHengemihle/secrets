@@ -27,7 +27,7 @@ describe('secret routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('create a new user', async () => {
+  it('/POST create a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
 
@@ -38,7 +38,7 @@ describe('secret routes', () => {
       email,
     });
   });
-  it('return the current user', async () => {
+  it('/POST logs in the current user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
 
