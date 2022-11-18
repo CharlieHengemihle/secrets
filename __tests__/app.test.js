@@ -55,6 +55,17 @@ describe('secret routes', () => {
       status: 401,
     });
   });
+  it('GET all the secrets!', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.get('/api/v1/secrets');
+    expect(res.body.length).toBe(2);
+    expect(res.body[0]).toEqual({
+      id: expect.any(String),
+      name: expect.any(String),
+      description: expect.any(String),
+      createdAt: expect.any(String),
+    });
+  });
   afterAll(() => {
     pool.end();
   });
