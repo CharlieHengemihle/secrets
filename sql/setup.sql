@@ -19,5 +19,5 @@ CREATE TABLE secrets (
 );
 
 INSERT INTO secrets (name, description) VALUES
-('0', 'Mothman', 'Regularly seen near lamps'),
+('Mothman', 'Regularly seen near lamps'),
 ('Krampus', 'Those kids probably deserved it');
