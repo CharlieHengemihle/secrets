@@ -27,6 +27,13 @@ describe('secret routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
+  it('DELETE should return 404 error when signed out', async () => {
+    const res = await request(app).get('/api/v1/users');
+    expect(res.body).toEqual({
+      message: 'You have to sign in. YOU HAVE TO!',
+      status: 401,
+    });
+  });
   it('/POST create a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
@@ -48,14 +55,7 @@ describe('secret routes', () => {
       iat: expect.any(Number),
     });
   });
-  it('DELETE should return 404 error when signed out', async () => {
-    const res = await request(app).get('/api/v1/users');
-    expect(res.body).toEqual({
-      message: 'You have to sign in. YOU HAVE TO!',
-      status: 401,
-    });
-  });
-  it('GET all the secrets!', async () => {
+  it('GET all the secrets (if authenticate)!', async () => {
     const [agent] = await registerAndLogin();
     const res = await agent.get('/api/v1/secrets');
     expect(res.body.length).toBe(2);
@@ -65,6 +65,10 @@ describe('secret routes', () => {
       description: expect.any(String),
       createdAt: expect.any(String),
     });
+  });
+  it('GET api/v1/secrets should return a 401 if not authenticated', async () => {
+    const res = await request(app).get('/api/v1/secrets');
+    expect(res.status).toEqual(401);
   });
   afterAll(() => {
     pool.end();
